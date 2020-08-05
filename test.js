@@ -52,7 +52,6 @@ class HistorialCartas {
     console.log("agregada al historial");
     console.log(this._cartas);
   }
-
   verificarCartaenHistorial(cardType, valueCard) {
     let historialcartas = this._cartas;
     for (let n in historialcartas) {
