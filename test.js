@@ -1,17 +1,17 @@
+let history = false;
+let yafuentregada = false;
+
 class FactoryCard {
-  crearCarta() {
-    console.log("carta creada");
-  }
-  agregarvalor(valor) {
-    console.log(`carta creada con valor ${valor}`);
+  CrearCarta() {
+    console.log("carta creada y entregada");
   }
 }
 
 class Trebol extends FactoryCard {
   constructor() {
-  //  console.log("creando carta Trebol");
+    //  console.log("creando carta Trebol");
     super();
-    this.crearCarta();
+    this.CrearCarta();
   }
 }
 
@@ -19,115 +19,109 @@ class Corazon extends FactoryCard {
   constructor() {
     //console.log("Creando carta Corazon");
     super();
-    this.crearCarta();
+    this.CrearCarta();
   }
 }
 
 class Diamantes extends FactoryCard {
   constructor() {
-  //  console.log("Creando carta Diamantes");
+    //  console.log("Creando carta Diamantes");
     super();
-    this.crearCarta();
+    this.CrearCarta();
   }
 }
 
 class Espadas extends FactoryCard {
   constructor() {
-//    console.log("Creando carta Espadas");
+    //    console.log("Creando carta Espadas");
     super();
-    this.crearCarta();
-  }
-}
-
-class RamdomCard {
-  constructor(tipocarta) {
-    switch (tipocarta) {
-      case "picas":
-        return new Picas();
-      case "corazon":
-        return new Corazon();
-      case "trebol":
-        return new Trebol();
-      default:
-        return null;
-    }
+    this.CrearCarta();
   }
 }
 
 let cartagenerada;
 
-class VerificadorCartas {
+class HistorialCartas {
   constructor(cartasgeneradas) {
     this._cartas = [];
   }
 
-  addCartaHitorial(carta) {
+  addCartaHistorial(carta) {
     this._cartas.push(carta);
+    history = true;
+    console.log("agregada al historial");
     console.log(this._cartas);
   }
 
   verificarCartaenHistorial(cardType, valueCard) {
-    let historialcartas = this._cartas.length;
-    for (let n = 0; n < historialcartas ; n++) {
+    let historialcartas = this._cartas;
+    for (let n in historialcartas) {
+      console.log("verificando haber su existe");
       if (
-        historialcartas[n].tipo.includes(cardType) &&
-        historialcartas[n].valor.includes(valueCard)
+        historialcartas[n].tipo === cardType &&
+        historialcartas[n].valor === valueCard
       ) {
-        alert("carta ya generada");
-        return true;
+        console.log(cardType, valueCard, "ya existia y esta en la posicion", n);
+        yafuentregada = true;
       } else {
-        return false;
+        yafuentregada = false;
       }
     }
+
+    return yafuentregada;
   }
 }
 
-let verificar = new VerificadorCartas();
+let historialcartas = new HistorialCartas();
 
 class GenerarCarta {
   generarCartas(nCartas) {
-    let barajadecartas = ["Diamantes", "Corazon", "Trebol", "Espadas"];
-    let valordecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
+    let barajadecartas = ["Diamantes" /*, "Corazon", "Trebol", "Espadas"*/];
+    let valordecartas = [2, /*3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"*/];
 
     for (let i = 0; i < nCartas; i++) {
-      let cardAleatoria = parseInt(Math.random() * barajadecartas.length);
-      let tipodeCarta = barajadecartas[cardAleatoria];
-      let valorCartaAleatorio = parseInt(Math.random() * valordecartas.length);
-      let valorcarta = valordecartas[valorCartaAleatorio];
+      let numeroAleatorio = parseInt(Math.random() * barajadecartas.length);
+      let tipodeCarta = barajadecartas[numeroAleatorio];
+      numeroAleatorio = parseInt(Math.random() * valordecartas.length);
+      let valordecarta = valordecartas[numeroAleatorio];
 
-      let tipoYvalorcartagenerados = {
+      let propiedadescartas = {
         tipo: tipodeCarta,
-        valor: valorcarta,
+        valor: valordecarta,
       };
-
-      if (verificar.verificarCartaenHistorial(tipodeCarta, valorcarta)) {
-        alert('sucias')
-        console.log('sucias')
-        this.generarCartas(1);
-      } else {
-        console.log('limpias')
-        verificar.addCartaHitorial(tipoYvalorcartagenerados);
-
-        switch (tipodeCarta) {
-          case "Diamantes":
-            cartagenerada = new Diamantes();
-            cartagenerada.agregarvalor(valorcarta);
-            break;
-          case "Corazon":
-            cartagenerada = new Corazon();
-            cartagenerada.agregarvalor(valorcarta);
-            break;
-          case "Trebol":
-            cartagenerada = new Trebol();
-            cartagenerada.agregarvalor(valorcarta);
-            break;
-          case "Espadas":
-            cartagenerada = new Espadas();
-            cartagenerada.agregarvalor(valorcarta);
+console.log('revisare si existe historial')
+      if (history) {
+        if (
+          historialcartas.verificarCartaenHistorial(tipodeCarta, valordecarta)
+        ) {
+          this.generarCartas(1)
+          console.log("nel mijo ya existe una igual");
+        } else {
+          historialcartas.addCartaHistorial(propiedadescartas);
+          console.log("no existe ninguna igual mijo");
         }
+      } else {
+        console.log("no existe historial mijo");
+        historialcartas.addCartaHistorial(propiedadescartas);
       }
+
+      /*  if (history) {
+        if (
+          historialcartas.verificarCartaenHistorial(tipodeCarta, valordecarta)
+        ) {
+          console.log('si existe')
+          this.generarCartas(1);
+        } else {
+          console.log('no existe')
+          historialcartas.addCartaHistorial(propiedadescartas);
+        }
+      } else {
+        historialcartas.addCartaHistorial(propiedadescartas);
+      }
+
+    */
     }
   }
 }
 
-new GenerarCarta().generarCartas(49);
+new GenerarCarta().generarCartas(5);
