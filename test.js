@@ -1,113 +1,41 @@
-class FactoryCard {
-  crearCarta() {
-    console.log("carta creada");
-  }
-  agregarvalor(valor) {
-    console.log(`carta creada con valor ${valor}`);
-  }
-}
-
-class Trebol extends FactoryCard {
-  constructor() {
-    //  console.log("creando carta Trebol");
-    super();
-    this.crearCarta();
-  }
-}
-
-class Corazon extends FactoryCard {
-  constructor() {
-    //console.log("Creando carta Corazon");
-    super();
-    this.crearCarta();
-  }
-}
-
-class Diamantes extends FactoryCard {
-  constructor() {
-    //  console.log("Creando carta Diamantes");
-    super();
-    this.crearCarta();
-  }
-}
-
-class Espadas extends FactoryCard {
-  constructor() {
-    //    console.log("Creando carta Espadas");
-    super();
-    this.crearCarta();
-  }
-}
-
-class RamdomCard {
-  constructor(tipocarta) {
-    switch (tipocarta) {
-      case "picas":
-        return new Picas();
-      case "corazon":
-        return new Corazon();
-      case "trebol":
-        return new Trebol();
-      default:
-        return null;
-    }
-  }
-}
-
-let cartagenerada;
-
-class VerificadorCartas {
-  constructor(cartasgeneradas) {
-    this._cartas = [];
-  }
-
-  addCartaHitorial(carta) {
-    this._cartas.push(carta);
-    console.log(this._cartas);
-  }
-
-  verificarCartaenHistorial(cardType, valueCard) {
-    let historialcartas = this._cartas.length;
-    for (let n = 0; n < historialcartas; n++) {
-      if (
-        historialcartas[n].tipo.includes(cardType) &&
-        historialcartas[n].valor.includes(valueCard)
-      ) {
-        alert("carta ya generada");
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-
-let verificar = new VerificadorCartas();
-
-class GenerarCarta {
+let masobarajeado = false;
+let masoDeCartas;
+class Cartas {
   constructor() {
     this._maso = [];
   }
 
-  generarCartas() {
-    let masoDeCartas = this.armarMasoDeCartas();
-    this.barajarMaso(masoDeCartas);
-    console.log(masoDeCartas);
+  tomarcarta(ncartasentregar) {
+    let cartasparuser = [];
+
+    if (!masobarajeado) {
+      masoDeCartas = this.armarMasoDeCartas();
+      this.barajarMaso(masoDeCartas);
+    }
+
+    for (let i = 0; i < ncartasentregar; i++) {
+      let cardAleatoria = parseInt(Math.random() * masoDeCartas.length);
+      let cartauser = masoDeCartas[cardAleatoria];
+      cartasparuser.push(cartauser);
+      masoDeCartas.splice(cardAleatoria, 1);
+    }
+    return cartasparuser;
   }
 
   armarMasoDeCartas() {
-    let barajadecartas = ["Diamantes", "Corazon", "Trebol", "Espadas"];
+    let tipodecarta = ["Diamantes", "Corazon", "Trebol", "Espadas"];
     let valordecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
     let maso = this._maso;
-    barajadecartas.forEach((a) => {
-      valordecartas.forEach((b) => {
+    tipodecarta.forEach((type) => {
+      valordecartas.forEach((value) => {
         maso.push({
-          tipo: a,
-          valor: b,
+          tipo: type,
+          valor: value,
         });
       });
     });
 
+    masobarajeado = true;
     return maso;
   }
 
@@ -118,4 +46,8 @@ class GenerarCarta {
   }
 }
 
-new GenerarCarta().generarCartas();
+const cpu = new Cartas().tomarcarta(3);
+const player = new Cartas().tomarcarta(3);
+
+console.log("cartas user", player);
+console.log("cartas banquero", cpu);
