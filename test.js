@@ -9,7 +9,7 @@ class FactoryCard {
 
 class Trebol extends FactoryCard {
   constructor() {
-  //  console.log("creando carta Trebol");
+    //  console.log("creando carta Trebol");
     super();
     this.crearCarta();
   }
@@ -25,7 +25,7 @@ class Corazon extends FactoryCard {
 
 class Diamantes extends FactoryCard {
   constructor() {
-  //  console.log("Creando carta Diamantes");
+    //  console.log("Creando carta Diamantes");
     super();
     this.crearCarta();
   }
@@ -33,7 +33,7 @@ class Diamantes extends FactoryCard {
 
 class Espadas extends FactoryCard {
   constructor() {
-//    console.log("Creando carta Espadas");
+    //    console.log("Creando carta Espadas");
     super();
     this.crearCarta();
   }
@@ -68,7 +68,7 @@ class VerificadorCartas {
 
   verificarCartaenHistorial(cardType, valueCard) {
     let historialcartas = this._cartas.length;
-    for (let n = 0; n < historialcartas ; n++) {
+    for (let n = 0; n < historialcartas; n++) {
       if (
         historialcartas[n].tipo.includes(cardType) &&
         historialcartas[n].valor.includes(valueCard)
@@ -85,49 +85,37 @@ class VerificadorCartas {
 let verificar = new VerificadorCartas();
 
 class GenerarCarta {
-  generarCartas(nCartas) {
+  constructor() {
+    this._maso = [];
+  }
+
+  generarCartas() {
+    let masoDeCartas = this.armarMasoDeCartas();
+    this.barajarMaso(masoDeCartas);
+    console.log(masoDeCartas);
+  }
+
+  armarMasoDeCartas() {
     let barajadecartas = ["Diamantes", "Corazon", "Trebol", "Espadas"];
     let valordecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
+    let maso = this._maso;
+    barajadecartas.forEach((a) => {
+      valordecartas.forEach((b) => {
+        maso.push({
+          tipo: a,
+          valor: b,
+        });
+      });
+    });
 
-    for (let i = 0; i < nCartas; i++) {
-      let cardAleatoria = parseInt(Math.random() * barajadecartas.length);
-      let tipodeCarta = barajadecartas[cardAleatoria];
-      let valorCartaAleatorio = parseInt(Math.random() * valordecartas.length);
-      let valorcarta = valordecartas[valorCartaAleatorio];
+    return maso;
+  }
 
-      let tipoYvalorcartagenerados = {
-        tipo: tipodeCarta,
-        valor: valorcarta,
-      };
-
-      if (verificar.verificarCartaenHistorial(tipodeCarta, valorcarta)) {
-        alert('sucias')
-        console.log('sucias')
-        this.generarCartas(1);
-      } else {
-        console.log('limpias')
-        verificar.addCartaHitorial(tipoYvalorcartagenerados);
-
-        switch (tipodeCarta) {
-          case "Diamantes":
-            cartagenerada = new Diamantes();
-            cartagenerada.agregarvalor(valorcarta);
-            break;
-          case "Corazon":
-            cartagenerada = new Corazon();
-            cartagenerada.agregarvalor(valorcarta);
-            break;
-          case "Trebol":
-            cartagenerada = new Trebol();
-            cartagenerada.agregarvalor(valorcarta);
-            break;
-          case "Espadas":
-            cartagenerada = new Espadas();
-            cartagenerada.agregarvalor(valorcarta);
-        }
-      }
-    }
+  barajarMaso(maso) {
+    maso.sort((x, z) => {
+      return 0.5 - Math.random();
+    });
   }
 }
 
-new GenerarCarta().generarCartas(49);
+new GenerarCarta().generarCartas();
