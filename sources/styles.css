@@ -12,7 +12,7 @@ body {
   background-attachment: fixed;
 }
 
-.container-game {
+.container-game, .maso {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -37,9 +37,14 @@ body {
   height: 325px;
   border-radius: 10px;
   background-image: url(./back-card.jpg);
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+.logo-card {
+  color: #ffffff;
+  font-size: 100px;
 }
 
 .container-cartas-mesa {
