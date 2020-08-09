@@ -12,11 +12,11 @@ body {
   background-attachment: fixed;
 }
 
-.container-game, .maso {
+.container-game,
+.maso {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
 }
 
@@ -25,10 +25,16 @@ body {
   font-weight: 600;
   font-size: 45px;
   color: #ffffff;
-  margin-top: 0;
+  margin: 0;
 }
 
 .container-maso-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0px 5px;
   /** margin: 2em;**/
 }
 
@@ -40,16 +46,54 @@ body {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  margin: 10px;
+  filter: drop-shadow(5px 5px 20px #272727);
+  align-items: center;
 }
+
 .logo-card {
   color: #ffffff;
   font-size: 100px;
 }
 
+.btn {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  margin: 10px 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  width: 220px;
+  height: 45px;
+  border-radius: 8px;
+}
+
+.tomar-carta {
+  background-color: #f24b4b;
+}
+
+.no-tomar-carta {
+  background-color: #0468bf;
+}
+
+.mesa-juego {
+  width: 1020px;
+  height: 265px;
+  background: rgba(39, 39, 39, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+}
+
+.mesa-cartas {
+  margin: 15px 0px;
+}
+
 .container-cartas-mesa {
-  background-color: royalblue;
-  height: 80px;
-  width: 80px;
-  /* margin: 2em;**/
+  margin: 0px 10px;
 }
