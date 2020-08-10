@@ -1,14 +1,7 @@
 let masobarajeado = false;
 let masoDeCartas;
-
-class Ui {
-  crearhtml(arraycartas, player) {
-    arraycartas.forEach((carta) => {
-      console.log(carta.tipo, player);
-    });
-  }
-}
-
+let cartashumano = [];
+let cartascpu = [];
 class Cartas {
   constructor() {
     this._maso = [];
@@ -28,7 +21,7 @@ class Cartas {
       cartasparuser.push(cartauser);
       masoDeCartas.splice(cardAleatoria, 1);
     }
-    new Ui().crearhtml(cartasparuser, player);
+    this.masocadajugador(cartasparuser, player);
   }
 
   armarMasoDeCartas() {
@@ -53,9 +46,25 @@ class Cartas {
       return 0.5 - Math.random();
     });
   }
+
+  masocadajugador(masocartas, player) {
+    if (player === 'cpu') {
+      masocartas.forEach((cartas) => {
+        cartascpu.push(cartas);
+      });
+    } else {
+      masocartas.forEach((cartas) => {
+        cartashumano.push(cartas);
+      });
+    }
+  }
 }
 
-const cpu = new Cartas().tomarcarta(3, "cpu");
-const player = new Cartas().tomarcarta(3, "houdini");
+let cpu = new Cartas().tomarcarta(3, "cpu");
+let player = new Cartas().tomarcarta(3, "houdini");
 
-//
+document.getElementById("tomar").addEventListener("click", () => {
+  player = new Cartas().tomarcarta(1, "houdini");
+
+  console.log(cartashumano);
+});
