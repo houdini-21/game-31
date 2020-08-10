@@ -60,7 +60,7 @@ body {
 }
 .logo-card-small {
   color: #ffffff;
-  font-size: 70px;
+  font-size: 75px;
 }
 
 .btn {
@@ -116,6 +116,7 @@ body {
 }
 
 .carta-mesa {
+  position: relative;
   width: 160px;
   height: 236px;
   border-radius: 10px;
@@ -123,7 +124,44 @@ body {
   margin: 0px 20px;
 }
 
-
 .front-card {
-  background-color: #ffffff;
+  background: #ffffff;
+  box-sizing: border-box;
 }
+.carta-mesa i {
+  font-size: 50px;
+}
+
+/** 
+spade-espadas
+club-trebol
+diamond-diamantes
+heart-corazon
+*/
+
+.heart-card, .diamond-card{
+  color: #f24b4b;
+  border: 3px solid #f24b4b;
+}
+.club-card, .spade-card {
+  color: #0D0D0D;
+  border: 3px solid #0D0D0D;
+}
+
+.carta-mesa p {
+  margin: 5px 10px;
+  font-size: 27px;
+}
+
+.number-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.number-bottom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+

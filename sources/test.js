@@ -25,7 +25,7 @@ class Cartas {
   }
 
   armarMasoDeCartas() {
-    let tipodecarta = ["Diamantes", "Corazon", "Trebol", "Espadas"];
+    let tipodecarta = ["diamond", "club", "spade", "heart"];
     let valordecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
     let maso = this._maso;
     tipodecarta.forEach((type) => {
