@@ -56,11 +56,11 @@ body {
 
 .logo-card {
   color: #ffffff;
-  font-size: 100px;
+  font-size: 85px;
 }
 .logo-card-small {
   color: #ffffff;
-  font-size: 75px;
+  font-size: 65px;
 }
 
 .btn {
@@ -128,7 +128,7 @@ body {
   background: #ffffff;
   box-sizing: border-box;
 }
-.carta-mesa i {
+.front-card i {
   font-size: 50px;
 }
 
@@ -139,13 +139,15 @@ diamond-diamantes
 heart-corazon
 */
 
-.heart-card, .diamond-card{
+.heart-card,
+.diamond-card {
   color: #f24b4b;
   border: 3px solid #f24b4b;
 }
-.club-card, .spade-card {
-  color: #0D0D0D;
-  border: 3px solid #0D0D0D;
+.club-card,
+.spade-card {
+  color: #0d0d0d;
+  border: 3px solid #0d0d0d;
 }
 
 .carta-mesa p {
@@ -164,4 +166,3 @@ heart-corazon
   bottom: 0;
   right: 0;
 }
-
