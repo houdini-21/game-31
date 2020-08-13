@@ -20,7 +20,16 @@ class Marcador {
         break;
       case "AS":
         //aqui debo de preguntar por el valor a darle a 11
-        puntajegeneral = 11;
+        if (player === "cpu") {
+          puntajegeneral = 11;
+        } else {
+          while (!(puntajegeneral === 11 || puntajegeneral === 1)) {
+            let valoras = parseInt(
+              prompt("sacaste un AS elije su valor solo puede ser de 1 a 11")
+            );
+            puntajegeneral = valoras;
+          }
+        }
         break;
     }
     player === "cpu"
@@ -38,9 +47,9 @@ class Marcador {
 }
 
 //reordenamiento de codigo y dejando camino para la logica del banquero
-//la suma de puntos se suman el doble si tenia 2+3+4 = 9 se vuelve a sumar 9+2+3+4+5 =14 y
-// a hora de definir el valor al as en la parte user
-//tratar de solucionar los problemas de sumas y la logica de definir valor al as
+//problemas a la hora de asignar un valor al as
+//solucionar el valor de as que pregunte el valor al user y al banquero(elija segun situacion)
+
 class Ui {
   generarTemplatedeCartas(cartasarray, playeruid) {
     let result = "";
@@ -128,21 +137,13 @@ class Jugador {
   pedirCarta(ncartasentregar, player) {
     claseCartas.tomarCartadeMaso(ncartasentregar, player);
   }
-
-  nopedirCarta() {}
-
-  elegirValorAs() {
-    let valoras = parseInt(
-      prompt("sacaste un as elije su valor solo puede ser de 1 a 11")
-    );
-    return valoras;
-  }
 }
 
 class Cpu extends Jugador {
   constructor() {
     super();
   }
+  //pedir carta
 }
 
 document.getElementById("tomar").addEventListener("click", () => {
