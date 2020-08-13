@@ -7,21 +7,26 @@ let puntoscpu = 0;
 
 class Marcador {
   calcularpuntos(puntos, player) {
-    if (puntos === "J" || puntos === "Q" || puntos === "K") {
-      puntos = 10;
+    let puntajegeneral = puntos[puntos.length - 1].valor;
+    switch (puntajegeneral) {
+      case "Q":
+        puntajegeneral = 10;
+        break;
+      case "J":
+        puntajegeneral = 10;
+        break;
+      case "K":
+        puntajegeneral = 10;
+        break;
+      case "AS":
+        //aqui debo de preguntar por el valor a darle a 11
+        puntajegeneral = 11;
+        break;
     }
-    if (player === "cpu") {
-      puntoscpu += puntos;
-      console.log("cpu", puntoscpu);
-    } else {
-      if (puntos === "AS") {
-        let valoras = parseInt(prompt("sacaste la carta AS elige su valor"));
-        puntoshumano += valoras;
-      } else {
-        puntoshumano += puntos;
-      }
-      console.log("humanos", puntoshumano);
-    }
+    player === "cpu"
+      ? (puntoscpu += puntajegeneral)
+      : (puntoshumano += puntajegeneral);
+    console.log(puntoscpu, puntoshumano);
   }
 
   detectarganador() {}
@@ -32,19 +37,20 @@ class Marcador {
   }
 }
 
-let marcador = new Marcador();
-
+//reordenamiento de codigo y dejando camino para la logica del banquero
+//la suma de puntos se suman el doble si tenia 2+3+4 = 9 se vuelve a sumar 9+2+3+4+5 =14 y
+// a hora de definir el valor al as en la parte user
+//tratar de solucionar los problemas de sumas y la logica de definir valor al as
 class Ui {
   generarTemplatedeCartas(cartasarray, playeruid) {
     let result = "";
     if (playeruid === "cpu") {
-      cartasarray.forEach((data) => {
+      cartasarray.forEach(() => {
         const templatecardcpu = `             
         <div class="carta-mesa back-card">
           <i class="fal fa-helmet-battle logo-card-small"></i>
         </div>`;
         result += templatecardcpu;
-        marcador.calcularpuntos(data.valor, playeruid);
         document.getElementById("banquero").innerHTML = result;
       });
     } else {
@@ -56,23 +62,20 @@ class Ui {
           <div class="number-bottom"><p>${data.valor}</p></div>
         </div>`;
         result += templatecardhumano;
-        marcador.calcularpuntos(data.valor, playeruid);
         document.getElementById("player").innerHTML = result;
       });
     }
-    marcador.reiniciarmarcador();
   }
 }
 
 let claseui = new Ui();
+let marcador = new Marcador();
 
 class Cartas {
   constructor() {
     this._maso = [];
   }
 
-  //si jugador necesita carta la pide
-  //se escoge al ganador segun cercanda al 31 o si es igual al 31
   inicioPartida() {
     masoDeCartas = this.armarMasoDeCartas();
     this.barajarMaso(masoDeCartas);
@@ -104,25 +107,18 @@ class Cartas {
   }
 
   tomarCartadeMaso(ncartasentregar, player) {
-    let cartasparuser = [];
     let arraycartasplayers;
     for (let i = 0; i < ncartasentregar; i++) {
       let numeroaleatorio = parseInt(Math.random() * masoDeCartas.length);
       let cartauser = masoDeCartas[numeroaleatorio];
-      cartasparuser.push(cartauser);
+      player === "cpu"
+        ? (cartascpu.push(cartauser), (arraycartasplayers = cartascpu))
+        : (cartashumano.push(cartauser), (arraycartasplayers = cartashumano));
+      marcador.calcularpuntos(arraycartasplayers, player);
       masoDeCartas.splice(numeroaleatorio, 1);
     }
-    cartasparuser.forEach((cartas) => {
-      player === "cpu"
-        ? (cartascpu.push(cartas), (arraycartasplayers = cartascpu))
-        : (cartashumano.push(cartas), (arraycartasplayers = cartashumano));
-    });
     claseui.generarTemplatedeCartas(arraycartasplayers, player);
   }
-
-  //ui
-  //generartemplate
-  //generarmodal
 }
 
 let claseCartas = new Cartas();
@@ -135,7 +131,12 @@ class Jugador {
 
   nopedirCarta() {}
 
-  elegirValorAs() {}
+  elegirValorAs() {
+    let valoras = parseInt(
+      prompt("sacaste un as elije su valor solo puede ser de 1 a 11")
+    );
+    return valoras;
+  }
 }
 
 class Cpu extends Jugador {
@@ -144,7 +145,6 @@ class Cpu extends Jugador {
   }
 }
 
-let clasejugador = new Jugador();
 document.getElementById("tomar").addEventListener("click", () => {
-  clasejugador.pedirCarta(1, "houdini");
+  new Jugador().pedirCarta(1, "houdini");
 });
