@@ -2,35 +2,67 @@ let masobarajeado = false;
 let masoDeCartas;
 let cartashumano = [];
 let cartascpu = [];
+let puntoshumano = 0;
+let puntoscpu = 0;
+
+class Marcador {
+  calcularpuntos(puntos, player) {
+  }
+
+  detectarganador() {}
+}
+
+let marcador = new Marcador();
+
+class Ui {
+  generarTemplatedeCartas(cartasarray, playeruid) {
+    let result = "";
+    if (playeruid === "cpu") {
+      cartasarray.forEach((data) => {
+        const templatecardcpu = `             
+        <div class="carta-mesa back-card">
+          <i class="fal fa-helmet-battle logo-card-small"></i>
+        </div>`;
+        result += templatecardcpu;
+        document.getElementById("banquero").innerHTML = result;
+      });
+    } else {
+      cartasarray.forEach((data) => {
+        const templatecardhumano = `
+        <div class="carta-mesa front-card ${data.tipo}-card">
+          <div class="number-top"><p>${data.valor}</p></div>
+            <i class="fal fa-${data.tipo}"></i>
+          <div class="number-bottom"><p>${data.valor}</p></div>
+        </div>`;
+        result += templatecardhumano;
+        document.getElementById("player").innerHTML = result;
+      });
+    }
+  }
+}
+
+let claseui = new Ui();
 
 class Cartas {
   constructor() {
     this._maso = [];
   }
 
-  tomarcarta(ncartasentregar, player) {
-    let cartasparuser = [];
-
-    if (!masobarajeado) {
-      masoDeCartas = this.armarMasoDeCartas();
-      this.barajarMaso(masoDeCartas);
-    }
-
-    for (let i = 0; i < ncartasentregar; i++) {
-      let cardAleatoria = parseInt(Math.random() * masoDeCartas.length);
-      let cartauser = masoDeCartas[cardAleatoria];
-      cartasparuser.push(cartauser);
-      masoDeCartas.splice(cardAleatoria, 1);
-    }
-    this.entregarCartaJugador(cartasparuser, player);
+  //si jugador necesita carta la pide
+  //se escoge al ganador segun cercanda al 31 o si es igual al 31
+  inicioPartida() {
+    masoDeCartas = this.armarMasoDeCartas();
+    this.barajarMaso(masoDeCartas);
+    this.tomarCartadeMaso(3, "cpu");
+    this.tomarCartadeMaso(3, "houdini");
   }
 
   armarMasoDeCartas() {
-    let tipodecarta = ["diamond", "club", "spade", "heart"];
-    let valordecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
+    let tiposdecarta = ["diamond", "club", "spade", "heart"];
+    let valoresdecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
     let maso = this._maso;
-    tipodecarta.forEach((type) => {
-      valordecartas.forEach((value) => {
+    tiposdecarta.forEach((type) => {
+      valoresdecartas.forEach((value) => {
         maso.push({
           tipo: type,
           valor: value,
@@ -48,50 +80,49 @@ class Cartas {
     });
   }
 
-  entregarCartaJugador(masocartas, player) {
-    if (player === "cpu") {
-      masocartas.forEach((cartas) => {
-        cartascpu.push(cartas);
-        this.generarTemplatedeCartas(cartascpu, player);
-      });
-    } else {
-      masocartas.forEach((cartas) => {
-        cartashumano.push(cartas);
-        this.generarTemplatedeCartas(cartashumano, player);
-      });
+  tomarCartadeMaso(ncartasentregar, player) {
+    let cartasparuser = [];
+    let arraycartasplayers;
+
+    for (let i = 0; i < ncartasentregar; i++) {
+      let numeroaleatorio = parseInt(Math.random() * masoDeCartas.length);
+      let cartauser = masoDeCartas[numeroaleatorio];
+      cartasparuser.push(cartauser);
+      masoDeCartas.splice(numeroaleatorio, 1);
     }
+    cartasparuser.forEach((cartas) => {
+      player === "cpu"
+        ? (cartascpu.push(cartas), (arraycartasplayers = cartascpu))
+        : (cartashumano.push(cartas), (arraycartasplayers = cartashumano));
+    });
+    claseui.generarTemplatedeCartas(arraycartasplayers, player);
   }
-  
-  generarTemplatedeCartas(cartasarray, playeruid) {
-    let result = "";
-    if (playeruid === "cpu") {
-      cartasarray.forEach(() => {
-        const carta = `             
-        <div class="carta-mesa back-card">
-          <i class="fal fa-helmet-battle logo-card-small"></i>
-        </div>`;
-        result += carta;
-        document.getElementById("banquero").innerHTML = result;
-      });
-    } else {
-      cartasarray.forEach((data) => {
-        const template = `
-        <div class="carta-mesa front-card ${data.tipo}-card">
-          <div class="number-top"><p>${data.valor}</p></div>
-            <i class="fal fa-${data.tipo}"></i>
-          <div class="number-bottom"><p>${data.valor}</p></div>
-        </div>`;
-        result += template;
-        document.getElementById("player").innerHTML = result;
-      });
-    }
+
+  //ui
+  //generartemplate
+  //generarmodal
+}
+
+let claseCartas = new Cartas();
+claseCartas.inicioPartida();
+
+class Jugador {
+  pedirCarta(ncartasentregar, player) {
+    claseCartas.tomarCartadeMaso(ncartasentregar, player);
+  }
+
+  nopedirCarta() {}
+
+  elegirValorAs() {}
+}
+
+class Cpu extends Jugador {
+  constructor() {
+    super();
   }
 }
 
-let cpu = new Cartas().tomarcarta(3, "cpu");
-let player = new Cartas().tomarcarta(3, "houdini");
-
+let clasejugador = new Jugador();
 document.getElementById("tomar").addEventListener("click", () => {
-  player = new Cartas().tomarcarta(1, "houdini");
-  cpu = new Cartas().tomarcarta(1, "cpu");
+  clasejugador.pedirCarta(1, "houdini");
 });
