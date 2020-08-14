@@ -132,12 +132,9 @@ body {
   font-size: 50px;
 }
 
-/** 
-spade-espadas
-club-trebol
-diamond-diamantes
-heart-corazon
-*/
+.hidden {
+  display: none !important;
+}
 
 .heart-card,
 .diamond-card {
@@ -165,4 +162,91 @@ heart-corazon
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: rgba(37, 37, 37, 0.75);
+  backdrop-filter: blur(5px);
+}
+
+.container-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #ffffff;
+  height: 300px;
+  width: 500px;
+  border-radius: 10px;
+}
+
+.tittle-modal {
+  margin: 5px;
+  font-size: 40px;
+  color: #0d0d0d;
+}
+
+.subtittle-modal {
+  margin: 5px;
+  width: 60%;
+  font-size: 18px;
+  font-weight: 400;
+  color: #0d0d0d;
+  text-align: center;
+}
+
+input.input-modal {
+  font-size: 16px;
+  border-style: solid;
+  padding: 10px;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #0468bf;
+  color: #252525;
+  margin: 10px;
+  width: 100px;
+}
+
+input.input-modal:focus {
+  outline: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.enviar-valor {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  width: 200px;
+  height: 45px;
+  border-radius: 8px;
+  background-color: #0468bf;
 }
