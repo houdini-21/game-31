@@ -1,24 +1,8 @@
-let masobarajeado = false;
-let masoDeCartas;
-let cartashumano = [];
-let cartascpu = [];
-let puntoshumano = 0;
-let puntoscpu = 0;
-
-class Ui {
-  generarTemplatedeCartas(cartasarray, playeruid) {
+class Procesos {
+  crearHtml(arrayCartas, id) {
     let result = "";
-    if (playeruid === "cpu") {
-      cartasarray.forEach(() => {
-        const templatecardcpu = `             
-        <div class="carta-mesa back-card">
-          <i class="fal fa-helmet-battle logo-card-small"></i>
-        </div>`;
-        result += templatecardcpu;
-        document.getElementById("banquero").innerHTML = result;
-      });
-    } else {
-      cartasarray.forEach((data) => {
+    if (id === "player") {
+      arrayCartas.forEach((data) => {
         const templatecardhumano = `
         <div class="carta-mesa front-card ${data.tipo}-card">
           <div class="number-top"><p>${data.valor}</p></div>
@@ -28,67 +12,132 @@ class Ui {
         result += templatecardhumano;
         document.getElementById("player").innerHTML = result;
       });
+    } else {
+      arrayCartas.forEach(() => {
+        const templatecardcpu = `             
+        <div class="carta-mesa back-card">
+          <i class="fal fa-helmet-battle logo-card-small"></i>
+        </div>`;
+        result += templatecardcpu;
+        document.getElementById("banquero").innerHTML = result;
+      });
     }
   }
+  calcularpuntos(puntos) {
+    console.log(puntos);
+  }
 }
+class Jugador {
+  constructor(name, id, maso, puntos) {
+    this._name = name;
+    this._id = id;
+    this._maso = [];
+    this._puntos = puntos;
+  }
 
-class Marcador {
-  calcularpuntos(puntos, player) {
-    let puntajegeneral = puntos[puntos.length - 1].valor;
-    switch (puntajegeneral) {
+  get maso() {
+    return this._maso;
+  }
+  set maso(cartas) {
+    cartas.forEach((data) => {
+      this._maso.push(data);
+      this.puntos = data.valor;
+    });
+    process.crearHtml(this.maso, this.id);
+  }
+
+  get id() {
+    return this._id;
+  }
+  set id(uid) {
+    this._id = uid;
+  }
+
+  get name() {
+    return this._name;
+  }
+  set name(nombre) {
+    this._name = nombre;
+  }
+  get puntos() {
+    return this._puntos;
+  }
+
+  set puntos(points) {
+    switch (points) {
       case "Q":
-        puntajegeneral = 10;
+        points = 10;
         break;
       case "J":
-        puntajegeneral = 10;
+        points = 10;
         break;
       case "K":
-        puntajegeneral = 10;
+        points = 10;
         break;
       case "AS":
-        if (player === "cpu") {
-          puntajegeneral = 11;
-        } else {
-          while (!(puntajegeneral === 11 || puntajegeneral === 1)) {
-            let valoras = parseInt(
-              prompt("sacaste un AS elije su valor solo puede ser de 1 a 11")
-            );
-            puntajegeneral = valoras;
-          }
-        }
+        points = this.elegirvalorAs(this.id);
         break;
     }
-    player === "cpu" ?
-      (puntoscpu += puntajegeneral) :
-      (puntoshumano += puntajegeneral);
+
+    this._puntos += points;
+    process.calcularpuntos(this.puntos);
   }
 
-  detectarganador() {}
+  pedircarta(carta) {
+    this.maso = carta;
+  }
+
+  elegirvalorAs(id) {
+    let puntaje = 0;
+    if (id === "player") {
+      while (!(puntaje === 11 || puntaje === 1)) {
+        let valoras = parseInt(
+          prompt("sacaste un AS elije su valor solo puede ser de 1 a 11")
+        );
+        puntaje = valoras;
+      }
+    } else {
+      puntaje = 11;
+    }
+
+    return puntaje;
+  }
 }
-/**
- *   -Ya suma correctamente los puntajes incluyendo el AS, cree el modal y programe solo falta agregar la logica 
- * tambien estuve buscando una forma de ver que puntaje esta mas cercano a 31 y encontre algo sobre una busqueda binaria
- * pero no entiendo si esa es la manera correcta o hay otras
- *
- *   -gestionar los turnos aun no puedo hacer que el banquero "tome una carta" segun le comvenga
- *
- *   -trabajar la parte de turnos y agregar la logica al modal para que reconozca el valor de as
- * tambien crear la pantalla que muestra quien es el ganador y con cuantos puntos
- *
- */
+let process = new Procesos();
 
-let claseui = new Ui();
-let marcador = new Marcador();
+class Humano extends Jugador {
+  constructor(name, id = "player", maso, puntos = 0) {
+    super(name, id, maso, puntos);
+  }
+}
 
-class Cartas {
-  constructor() {
-    this._maso = [];
+let player = new Humano("houdini", "player", "", 0);
+
+class Cpu extends Jugador {
+  constructor(name, id = "banquero", maso, puntos = 0) {
+    super(name, id, maso, puntos);
+    this._masoJuego = [];
+  }
+
+  bienvenida() {
+    ///dice hola
+    console.log("hi");
+    //inicia baraja de carta
+    var masoDeCartas = this.armarMasoDeCartas();
+    //barajea
+    this.barajarMaso(masoDeCartas);
+    this._masoJuego = masoDeCartas;
+    //entrega carta a jugadores
+    let cartashumano = this.entregarcarta(3);
+    let cartascpu = this.entregarcarta(3);
+    player.maso = cartashumano;
+    this.maso = cartascpu;
   }
 
   armarMasoDeCartas() {
     let tiposdecarta = ["diamond", "club", "spade", "heart"];
     let valoresdecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
-    let maso = this._maso;
+    let maso = this._masoJuego;
     tiposdecarta.forEach((type) => {
       valoresdecartas.forEach((value) => {
         maso.push({
@@ -98,80 +147,35 @@ class Cartas {
       });
     });
 
-    masobarajeado = true;
     return maso;
   }
 
   barajarMaso(maso) {
-    maso.sort((x, z) => {
+    maso.sort(function (x, z) {
       return 0.5 - Math.random();
     });
   }
 
-  tomarCartadeMaso(ncartasentregar, player) {
-    let arraycartasplayers;
-    for (let i = 0; i < ncartasentregar; i++) {
+  entregarcarta(cant) {
+    let cartasusuarios = [];
+    let masoDeCartas = this._masoJuego;
+    for (let i = 0; i < cant; i++) {
       let numeroaleatorio = parseInt(Math.random() * masoDeCartas.length);
       let cartauser = masoDeCartas[numeroaleatorio];
-      player === "cpu" ?
-        (cartascpu.push(cartauser), (arraycartasplayers = cartascpu)) :
-        (cartashumano.push(cartauser), (arraycartasplayers = cartashumano));
-      marcador.calcularpuntos(arraycartasplayers, player);
       masoDeCartas.splice(numeroaleatorio, 1);
+      cartasusuarios.push(cartauser);
     }
-    claseui.generarTemplatedeCartas(arraycartasplayers, player);
+    return cartasusuarios;
   }
 }
 
-let claseCartas = new Cartas();
-
-const inicioPartida = () => {
-  masoDeCartas = claseCartas.armarMasoDeCartas();
-  claseCartas.barajarMaso(masoDeCartas);
-  claseCartas.tomarCartadeMaso(3, "cpu");
-  claseCartas.tomarCartadeMaso(3, "humano");
-};
-
-class Jugador {
-  pedirCarta(ncartasentregar, player) {
-    claseCartas.tomarCartadeMaso(ncartasentregar, player);
-  }
-
-  //elegir valor AS
-
-  //No pedir carta
-}
-
-class Cpu extends Jugador {
-  constructor() {
-    super();
-  }
-  //da bienvenida
-  //barajea cartas
-  //entrega cartas
-  //pregunta su quiere carta
-  //sino termina el juego
-}
-
-class Humano extends Jugador {
-  constructor() {
-    super();
-  }
-}
+let cpu = new Cpu();
+cpu.bienvenida();
 
 document.getElementById("tomar").addEventListener("click", () => {
-  new Humano().pedirCarta(1, "humano");
+  player.pedircarta(cpu.entregarcarta(1));
 });
 
-inicioPartida();
-
-//Class cartas llamara a procesos
-//procesos llama a player
-//player llama a cartas
-//
-//
-//
-//
-//si se pasa pierde,
-//si tiene 31 gana sino
-//comparar los dos puntajes solo si son menores a 31 y verifica quien tiene mayor puntaje
+document.getElementById("quedarse").addEventListener("click", () => {
+  cpu.pedircarta(cpu.entregarcarta(1));
+});
