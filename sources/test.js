@@ -1,4 +1,8 @@
 class Procesos {
+  constructor(name, id, puntos) {
+    (this.name = name), (this.id = id), (this.points = puntos);
+  }
+
   crearHtml(arrayCartas, id) {
     let result = "";
     if (id === "player") {
@@ -23,10 +27,30 @@ class Procesos {
       });
     }
   }
-  calcularpuntos(puntos) {
-    console.log(puntos);
+
+  calcularpuntos(puntos, name) {
+    if (puntos === 31) {
+      console.log("el ganador es", name);
+    } else if (puntos > 31) {
+      console.log("el Jugador", name, "pierde");
+    }
+  }
+
+  unjugadorquedado(name, id, puntos) {
+    (this.name = name), (this.id = id), (this.points = puntos);
+  }
+
+  todosquedados(name, id, puntos) {
+    if (puntos > this.points) {
+      console.log("el ganador es", name, "el", id);
+    } else if (puntos === this.points) {
+      console.log("empate");
+    } else if (puntos < this.points) {
+      console.log("el ganador es", this.name, "el", this.id);
+    }
   }
 }
+
 class Jugador {
   constructor(name, id, maso, puntos) {
     this._name = name;
@@ -80,7 +104,7 @@ class Jugador {
     }
 
     this._puntos += points;
-    process.calcularpuntos(this.puntos);
+    process.calcularpuntos(this.puntos, this.name);
   }
 
   pedircarta(carta) {
@@ -108,6 +132,9 @@ let process = new Procesos();
 class Humano extends Jugador {
   constructor(name, id = "player", maso, puntos = 0) {
     super(name, id, maso, puntos);
+  }
+  quedarse() {
+    process.unjugadorquedado(this.name, this.id, this.puntos);
   }
 }
 
@@ -167,15 +194,48 @@ class Cpu extends Jugador {
     }
     return cartasusuarios;
   }
+
+  tomarcarta() {
+    let cartasbanquero = this.entregarcarta(1);
+    return cartasbanquero;
+  }
+
+  sigueJugando(res) {
+    let cartasUser;
+    if (res === "si") {
+      cartasUser = this.entregarcarta(1);
+      return cartasUser;
+    } else if (res === "no") {
+      this.turnobanquero();
+    }
+  }
+
+  turnobanquero() {
+    let seguir = 'si'
+    while (seguir === 'si') {
+      let puntos = this.puntos;
+      if (puntos > 26 && puntos < 31) {
+        process.todosquedados(this.name, this.id, this.puntos);
+        seguir = 'no'
+      }
+      else if(puntos < 31){
+        this.pedircarta(this.tomarcarta());
+      }
+      else if(puntos > 31){
+        seguir = 'no'
+      }
+    }
+  }
 }
 
-let cpu = new Cpu();
+let cpu = new Cpu("James", "Banquero", 0);
 cpu.bienvenida();
 
 document.getElementById("tomar").addEventListener("click", () => {
-  player.pedircarta(cpu.entregarcarta(1));
+  player.pedircarta(cpu.sigueJugando("si"));
 });
 
 document.getElementById("quedarse").addEventListener("click", () => {
-  cpu.pedircarta(cpu.entregarcarta(1));
+  player.quedarse();
+  cpu.sigueJugando("no");
 });
