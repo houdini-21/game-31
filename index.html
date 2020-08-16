@@ -14,20 +14,19 @@
   </head>
   <body>
     <main class="container">
-      <section class="modal hidden">
+      <section class="modal hidden" id="modalAS">
         <div class="container-modal">
           <div class="content">
             <h2 class="tittle-modal">Sacaste un AS!!</h2>
-            <p class="subtittle-modal">Debes elegir el valor de la carta que puede ser 1 u 11</p>
-            <input type="number" class="input-modal"/>
-            <button class="enviar-valor">Aceptar</button>
+            <p class="subtittle-modal">Debes elegir el valor de la carta</p>
+            <div class="container-btns-number">
+              <button class="btn-number-one-eleven" id="1">1</button>
+              <button class="btn-number-one-eleven" id="11">11</button>
+            </div>
           </div>
         </div>
       </section>
 
-      <div class="tittle-game">
-        <h1>31 Juego de cartas</h1>
-      </div>
       <section class="container-game">
         <section class="container-maso-btns">
           <div class="maso back-card">
@@ -42,9 +41,17 @@
         </section>
         <section class="container-cartas-mesa">
           <div class="mesa-cartas">
+            <div class="container-puntos-users" id="banqueropuntos">
+              <p>Cartas banquero</p>
+              <p>Puntos: ?</p>
+            </div>
             <div class="mesa-juego" id="banquero"></div>
           </div>
           <div class="mesa-cartas">
+            <div class="container-puntos-users" id="banqueropuntos">
+              <p>Tus Cartas</p>
+              <p id="puntos-user">Puntos</p>
+            </div>
             <div class="mesa-juego" id="player"></div>
           </div>
         </section>

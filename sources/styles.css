@@ -90,13 +90,31 @@ body {
 }
 
 .mesa-cartas {
-  width: 1025px;
-  height: 270px;
+  width: 1070px;
+  height: 295px;
   background: rgba(39, 39, 39, 0.3);
   backdrop-filter: blur(10px);
   border-radius: 10px;
   display: flex;
   /**justify-content: center;**/
+}
+
+.mesa-cartas {
+  display: flex;
+  flex-direction: column;
+}
+
+.container-puntos-users {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 20px;
+}
+.container-puntos-users p {
+  margin: 0;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .mesa-juego {
@@ -121,7 +139,7 @@ body {
   height: 236px;
   border-radius: 10px;
   align-items: center;
-  margin: 0px 20px;
+  margin: 0px 8px;
 }
 
 .front-card {
@@ -211,42 +229,35 @@ body {
   text-align: center;
 }
 
-input.input-modal {
-  font-size: 16px;
-  border-style: solid;
-  padding: 10px;
-  border-radius: 5px;
-  border-width: 2px;
-  border-color: #0468bf;
-  color: #252525;
-  margin: 10px;
-  width: 100px;
+.container-btns-number {
+  margin: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
-input.input-modal:focus {
+.btn-number-one-eleven {
+  cursor: pointer;
+  width: 60px;
+  height: 35px;
+  background: #ffffff;
+  border: 2px solid #0468bf;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 18px;
+  font-family: "Lato";
+  color: #0468bf;
+  font-weight: 600;
+  margin: 0 20px;
+}
+
+.btn-number-one-eleven:focus {
   outline: none;
 }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-.enviar-valor {
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  margin: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-family: "Lato", sans-serif;
-  font-weight: 600;
-  width: 200px;
-  height: 45px;
-  border-radius: 8px;
-  background-color: #0468bf;
+.btn-number-one-eleven:hover {
+  background: #0468bf;
+  color: #ffffff;
+  transition: 500ms;
 }

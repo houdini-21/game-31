@@ -3,6 +3,11 @@ class Procesos {
     (this.name = name), (this.id = id), (this.points = puntos);
   }
 
+  actualizapuntosuser(puntos) {
+    const divpuntos = document.getElementById("puntos-user");
+    divpuntos.innerText = `Puntos ${puntos}`;
+  }
+
   crearHtml(arrayCartas, id) {
     let result = "";
     if (id === "player") {
@@ -49,6 +54,16 @@ class Procesos {
       console.log("el ganador es", this.name, "el", this.id);
     }
   }
+
+  mostrarModal() {
+    const modalvaloras = document.getElementById("modalAS");
+    modalvaloras.classList.remove("hidden");
+    const btn11 = document.getElementById("11");
+    btn11.addEventListener("click", this.btnvalue);
+  }
+
+  //mostar
+  btnvalue(btndata) {}
 }
 
 class Jugador {
@@ -105,6 +120,7 @@ class Jugador {
 
     this._puntos += points;
     process.calcularpuntos(this.puntos, this.name);
+    process.actualizapuntosuser(this.puntos);
   }
 
   pedircarta(carta) {
@@ -114,6 +130,8 @@ class Jugador {
   elegirvalorAs(id) {
     let puntaje = 0;
     if (id === "player") {
+      //process.mostrarModal();
+      //puntaje = valorAS;
       while (!(puntaje === 11 || puntaje === 1)) {
         let valoras = parseInt(
           prompt("sacaste un AS elije su valor solo puede ser de 1 a 11")
@@ -147,14 +165,9 @@ class Cpu extends Jugador {
   }
 
   bienvenida() {
-    ///dice hola
-    console.log("hi");
-    //inicia baraja de carta
     var masoDeCartas = this.armarMasoDeCartas();
-    //barajea
     this.barajarMaso(masoDeCartas);
     this._masoJuego = masoDeCartas;
-    //entrega carta a jugadores
     let cartashumano = this.entregarcarta(3);
     let cartascpu = this.entregarcarta(3);
     player.maso = cartashumano;
@@ -211,18 +224,16 @@ class Cpu extends Jugador {
   }
 
   turnobanquero() {
-    let seguir = 'si'
-    while (seguir === 'si') {
+    let seguir = "si";
+    while (seguir === "si") {
       let puntos = this.puntos;
       if (puntos > 26 && puntos < 31) {
         process.todosquedados(this.name, this.id, this.puntos);
-        seguir = 'no'
-      }
-      else if(puntos < 31){
+        seguir = "no";
+      } else if (puntos < 31) {
         this.pedircarta(this.tomarcarta());
-      }
-      else if(puntos > 31){
-        seguir = 'no'
+      } else if (puntos > 31) {
+        seguir = "no";
       }
     }
   }
