@@ -14,7 +14,8 @@ body {
 
 .container-game,
 .maso,
-.carta-mesa {
+.carta-mesa,
+.box-points {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -27,6 +28,19 @@ body {
   font-size: 40px;
   color: #ffffff;
   margin: 0;
+}
+
+.box-points {
+  width: 50%;
+  margin: 20px;
+  justify-content: space-between;
+}
+
+.points-users {
+  margin: 0;
+  font-weight: normal;
+  font-size: 20px;
+  color: #0d0d0d;
 }
 
 .container-maso-btns {
@@ -81,6 +95,9 @@ body {
   border-radius: 8px;
 }
 
+.btn-reiniciar {
+  background-color: #de5855;
+}
 .tomar-carta {
   background-color: #de5855;
 }
@@ -195,10 +212,25 @@ body {
 
 .container-modal,
 .content,
-.modal {
+.modal,
+.content-winner {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.content-winner {
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 990px;
+  height: 590px;
+  border-radius: 15px;
+}
+
+.draw-modal {
+  margin: 5px;
+  width: 575px;
+  height: 327.97px;
 }
 
 .content {
@@ -224,6 +256,15 @@ body {
   text-align: center;
 }
 
+.tittle-modal-winner-lose {
+  font-weight: normal;
+  margin: 5px;
+  width: 60%;
+  font-weight: 400;
+  color: #0d0d0d;
+  text-align: center;
+  font-size: 40px;
+}
 .container-btns-number {
   margin: 1em;
   display: flex;
