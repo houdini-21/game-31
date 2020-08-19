@@ -1,0 +1,45 @@
+.carta-mesa {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  width: 155px;
+  height: 235px;
+  border-radius: 10px;
+  align-items: center;
+  margin: 0px 8px;
+}
+
+.front-card {
+  background: #2e3235;
+  box-sizing: border-box;
+}
+.front-card i {
+  font-size: 50px;
+}
+.heart-card,
+.diamond-card {
+  color: #de5855;
+}
+.club-card,
+.spade-card {
+  color: #f0f0f0;
+}
+
+.carta-mesa p {
+  margin: 5px 10px;
+  font-size: 27px;
+}
+
+.number-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.number-bottom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

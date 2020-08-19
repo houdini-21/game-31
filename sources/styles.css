@@ -95,15 +95,22 @@ body {
   border-radius: 8px;
 }
 
+.tomar-carta,
 .btn-reiniciar {
   background-color: #de5855;
 }
-.tomar-carta {
-  background-color: #de5855;
-}
 
+.tomar-carta:hover,
+.btn-reiniciar:hover {
+  transition: 500ms;
+  background-color: #d84240;
+}
 .no-tomar-carta {
   background-color: #55adde;
+}
+.no-tomar-carta:hover {
+  transition: 500ms;
+  background-color: #1286c4;
 }
 
 .mesa-cartas {
@@ -278,12 +285,12 @@ body {
   width: 60px;
   height: 35px;
   background: #ffffff;
-  border: 2px solid #0468bf;
+  border: 2px solid #55adde;
   border-radius: 5px;
   text-decoration: none;
   font-size: 18px;
   font-family: "Lato";
-  color: #0468bf;
+  color: #55adde;
   font-weight: 600;
   margin: 0 20px;
 }
@@ -293,7 +300,7 @@ body {
 }
 
 .btn-number-one-eleven:hover {
-  background: #0468bf;
+  background: #55adde;
   color: #ffffff;
   transition: 500ms;
 }
@@ -303,3 +310,5 @@ body {
   color: #0d0d0d !important;
   cursor: not-allowed;
 }
+
+
