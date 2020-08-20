@@ -81,7 +81,7 @@ class Procesos {
 
     setTimeout(() => {
       const modal = document.getElementById("winner-lose-modal");
-      modal.classList.remove("hidden");
+      modal.classList.replace("hidden", "fadeIn");
       const modaltemplate = `<div class="modal-winner">
       <div class="content-winner">
         <h2 class="tittle-modal-winner-lose">${tipo}</h2>
@@ -170,13 +170,13 @@ class Procesos {
   mostrarmodalvaloras() {
     setTimeout(() => {
       const modal = document.getElementById("modalAS");
-      modal.classList.remove("hidden");
+      modal.classList.replace("hidden", "fadeIn");
     }, 1000);
   }
 
   ocultarmodalvaloras() {
     const modal = document.getElementById("modalAS");
-    modal.classList.add("hidden");
+    modal.classList.replace("fadeIn", "hidden");
   }
 
   revelarTarjeta() {
@@ -369,6 +369,7 @@ const resetall = () => {
   document.getElementById("player").innerHTML = "";
   document.getElementById("banquero").innerHTML = "";
   btniniciar.classList.remove("hidden");
+  processclass.disabledbtn();
 };
 
 document.getElementById("tomar").addEventListener("click", () => {
