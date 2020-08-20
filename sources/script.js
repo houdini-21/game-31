@@ -136,10 +136,6 @@ class Procesos {
     }
   }
 
-  unjugadorquedado(name, id, puntos) {
-    (this.name = name), (this.id = id), (this.points = puntos);
-  }
-
   todosquedados() {
     if (this.pointsplayer < 31 && this.pointscpu < 31) {
       if (this.pointscpu > this.pointsplayer) {
@@ -167,14 +163,14 @@ class Procesos {
     }
   }
 
-  mostrarmodalvaloras() {
+  mostrarmodalvalorAS() {
     setTimeout(() => {
       const modal = document.getElementById("modalAS");
       modal.classList.replace("hidden", "fadeIn");
     }, 1000);
   }
 
-  ocultarmodalvaloras() {
+  ocultarmodalvalorAS() {
     const modal = document.getElementById("modalAS");
     modal.classList.replace("fadeIn", "hidden");
   }
@@ -200,14 +196,6 @@ class Jugador {
 
   set maso(cartas) {
     this._maso = cartas;
-  }
-
-  entregarcartausers(cartas) {
-    cartas.forEach((data) => {
-      this.maso.push(data);
-      this.setpuntos(data.valor);
-    });
-    processclass.crearHtmlCartas(this.maso, this.id);
   }
 
   get id() {
@@ -252,17 +240,25 @@ class Jugador {
   }
 
   pedircarta(carta) {
-    this.entregarcartausers(carta);
+    this.guardarCartaenMasodejugador(carta);
   }
 
   elegirvalorAs(id) {
     let puntaje = 0;
     if (id === "player") {
-      processclass.mostrarmodalvaloras();
+      processclass.mostrarmodalvalorAS();
     } else {
       puntaje = 11;
     }
     return puntaje;
+  }
+
+  guardarCartaenMasodejugador(cartas) {
+    cartas.forEach((data) => {
+      this.maso.push(data);
+      this.setpuntos(data.valor);
+    });
+    processclass.crearHtmlCartas(this.maso, this.id);
   }
 }
 
@@ -287,8 +283,8 @@ class Cpu extends Jugador {
     this._masocartasjuego = masoDeCartas;
     let cartashumano = this.entregarcarta(3);
     let cartascpu = this.entregarcarta(3);
-    player.entregarcartausers(cartashumano);
-    this.entregarcartausers(cartascpu);
+    player.guardarCartaenMasodejugador(cartashumano);
+    this.guardarCartaenMasodejugador(cartascpu);
     processclass.enabledbtn();
   }
 
@@ -343,9 +339,10 @@ class Cpu extends Jugador {
 
   turnobanquero() {
     let seguir = "si";
+    let puntosaesperar = Math.random() * (31 - 20) + 20;
     while (seguir === "si") {
       let puntos = this.puntos;
-      if (puntos > 26 && puntos < 90) {
+      if (puntos > puntosaesperar && puntos <= 31) {
         processclass.todosquedados();
         seguir = "no";
       } else if (puntos < 31) {
@@ -375,6 +372,7 @@ const resetall = () => {
 document.getElementById("tomar").addEventListener("click", () => {
   player.pedircarta(cpu.sigueJugando("si"));
 });
+
 processclass.disabledbtn();
 document.getElementById("quedarse").addEventListener("click", () => {
   processclass.disabledbtn();
@@ -387,7 +385,7 @@ opciones.forEach((btn) => {
   btn.addEventListener("click", () => {
     let opcion = parseInt(btn.id);
     player.setpuntos(opcion);
-    processclass.ocultarmodalvaloras();
+    processclass.ocultarmodalvalorAS();
   });
 });
 
