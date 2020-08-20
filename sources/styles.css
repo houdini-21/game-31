@@ -115,6 +115,9 @@ body {
   background-color: #de5855;
 }
 
+.btn:focus {
+  outline: none;
+}
 .tomar-carta:hover,
 .btn-reiniciar:hover {
   transition: 500ms;

@@ -14,6 +14,7 @@ class Procesos {
     btnquedarse.disabled = true;
     btnquedarse.classList.add("disable");
   }
+
   enabledbtn() {
     const btntomar = document.getElementById("tomar");
     const btnquedarse = document.getElementById("quedarse");
@@ -28,12 +29,11 @@ class Procesos {
     modal.classList.add("hidden");
     const tarjetas = document.getElementById("banquero");
     tarjetas.classList.remove("flip-carta");
-    this.idcpu = "";
-    this.idplayer = "";
-    this.pointscpu = '?';
+    this.pointscpu = "?";
     this.pointsplayer = 0;
     this.enabledbtn();
     this.mostrarpuntoscpu();
+    this.actualizarpuntosjugadores(this.pointsplayer, this.idplayer);
   }
 
   actualizarpuntosjugadores(puntos, id) {
@@ -82,7 +82,6 @@ class Procesos {
     setTimeout(() => {
       const modal = document.getElementById("winner-lose-modal");
       modal.classList.remove("hidden");
-      let template = "";
       const modaltemplate = `<div class="modal-winner">
       <div class="content-winner">
         <h2 class="tittle-modal-winner-lose">${tipo}</h2>
@@ -137,9 +136,6 @@ class Procesos {
     }
   }
 
-  /**
-   *  */
-
   unjugadorquedado(name, id, puntos) {
     (this.name = name), (this.id = id), (this.points = puntos);
   }
@@ -172,8 +168,10 @@ class Procesos {
   }
 
   mostrarmodalvaloras() {
-    const modal = document.getElementById("modalAS");
-    modal.classList.remove("hidden");
+    setTimeout(() => {
+      const modal = document.getElementById("modalAS");
+      modal.classList.remove("hidden");
+    }, 1000);
   }
 
   ocultarmodalvaloras() {
@@ -244,7 +242,7 @@ class Jugador {
       case "K":
         points = 10;
         break;
-      case "AS":
+      case "A":
         points = this.elegirvalorAs(this.id);
         break;
     }
@@ -283,8 +281,6 @@ class Cpu extends Jugador {
     this._masocartasjuego = [];
   }
 
-  volverajugar() {}
-
   bienvenida(player) {
     var masoDeCartas = this.armarMasoDeCartas();
     this.barajarMaso(masoDeCartas);
@@ -293,11 +289,12 @@ class Cpu extends Jugador {
     let cartascpu = this.entregarcarta(3);
     player.entregarcartausers(cartashumano);
     this.entregarcartausers(cartascpu);
+    processclass.enabledbtn();
   }
 
   armarMasoDeCartas() {
     let tiposdecarta = ["diamond", "club", "spade", "heart"];
-    let valoresdecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "AS"];
+    let valoresdecartas = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", "A"];
     let maso = this._masocartasjuego;
     tiposdecarta.forEach((type) => {
       valoresdecartas.forEach((value) => {
@@ -362,21 +359,22 @@ class Cpu extends Jugador {
 
 let cpu = new Cpu("James", "Banquero", 0);
 let player = new Humano("houdini", "player", "", 0);
-//btn
-cpu.bienvenida(player);
-//fin btn
+
+const btniniciar = document.getElementById("iniciar");
 
 const resetall = () => {
   cpu = new Cpu("James", "Banquero", 0);
   player = new Humano("houdini", "player", "", 0);
   processclass.reiniciar();
-  cpu.bienvenida(player);
+  document.getElementById("player").innerHTML = "";
+  document.getElementById("banquero").innerHTML = "";
+  btniniciar.classList.remove("hidden");
 };
 
 document.getElementById("tomar").addEventListener("click", () => {
   player.pedircarta(cpu.sigueJugando("si"));
 });
-
+processclass.disabledbtn();
 document.getElementById("quedarse").addEventListener("click", () => {
   processclass.disabledbtn();
   player.quedarse();
@@ -390,4 +388,9 @@ opciones.forEach((btn) => {
     player.setpuntos(opcion);
     processclass.ocultarmodalvaloras();
   });
+});
+
+btniniciar.addEventListener("click", () => {
+  cpu.bienvenida(player);
+  btniniciar.classList.add("hidden");
 });
