@@ -52,7 +52,22 @@ body {
   margin: 0px 10px;
   /** margin: 2em;**/
 }
-.back-card {
+
+.carta-mesa,
+.carta {
+  width: 155px;
+  height: 235px;
+}
+
+.carta-mesa {
+  position: relative;
+  margin: 0px 8px;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.back-card,
+.back-card-bank {
   background-image: url(./back.png);
   background-position: center;
   background-size: cover;
@@ -167,16 +182,43 @@ body {
   margin: 0px 8px;
 }
 
-.front-card {
+.front-card,
+.front-card-bank {
   background: #2e3235;
   box-sizing: border-box;
 }
-.front-card i {
+.front-card i,
+.front-card-bank i {
   font-size: 50px;
 }
 
 .hidden {
   display: none !important;
+}
+
+.flip-carta {
+  margin: 0px 8px;
+}
+
+.carta {
+  margin: 0px 8px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-carta .carta {
+  transform: rotateY(180deg);
+}
+
+.front-card-bank,
+.back-card-bank {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.front-card-bank {
+  transform: rotateY(180deg);
 }
 
 .heart-card,
@@ -310,5 +352,3 @@ body {
   color: #0d0d0d !important;
   cursor: not-allowed;
 }
-
-

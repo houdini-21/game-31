@@ -14,6 +14,27 @@ class Procesos {
     btnquedarse.disabled = true;
     btnquedarse.classList.add("disable");
   }
+  enabledbtn() {
+    const btntomar = document.getElementById("tomar");
+    const btnquedarse = document.getElementById("quedarse");
+    btntomar.disabled = false;
+    btntomar.classList.remove("disable");
+    btnquedarse.disabled = false;
+    btnquedarse.classList.remove("disable");
+  }
+
+  reiniciar() {
+    const modal = document.getElementById("winner-lose-modal");
+    modal.classList.add("hidden");
+    const tarjetas = document.getElementById("banquero");
+    tarjetas.classList.remove("flip-carta");
+    this.idcpu = "";
+    this.idplayer = "";
+    this.pointscpu = '?';
+    this.pointsplayer = 0;
+    this.enabledbtn();
+    this.mostrarpuntoscpu();
+  }
 
   actualizarpuntosjugadores(puntos, id) {
     if (id === "player") {
@@ -46,26 +67,43 @@ class Procesos {
     }
   }
 
+  mostrarpuntoscpu() {
+    let puntos = this.pointscpu;
+    const divpuntos = document.getElementById("puntos-cpu");
+    divpuntos.innerText = `Puntos ${puntos}`;
+  }
+
   modalmostrarganador(img, tipo, playerpo, cpupo) {
-    const modal = document.getElementById("winner-lose-modal");
-    modal.classList.remove("hidden");
-    let template = "";
-    const modaltemplate = `<div class="modal-winner">
-    <div class="content-winner">
-      <h2 class="tittle-modal-winner-lose">${tipo}</h2>
-      <div class="draw-winner-lose">
-        <img class="draw-modal" src="./sources/${img}.svg" />
+    setTimeout(() => {
+      this.revelarTarjeta();
+      this.mostrarpuntoscpu();
+    }, 500);
+
+    setTimeout(() => {
+      const modal = document.getElementById("winner-lose-modal");
+      modal.classList.remove("hidden");
+      let template = "";
+      const modaltemplate = `<div class="modal-winner">
+      <div class="content-winner">
+        <h2 class="tittle-modal-winner-lose">${tipo}</h2>
+        <div class="draw-winner-lose">
+          <img class="draw-modal" src="./sources/${img}.svg" />
+        </div>
+        <div class="box-points">
+          <h3 class="points-users">Tus puntos: ${playerpo}</h3>
+          <h3 class="points-users">Puntos banquero: ${cpupo}</h3>
+        </div>
+        <button type="button" class="btn-reiniciar btn" id="jugarotravez">
+          Volver a jugar
+        </button>
       </div>
-      <div class="box-points">
-        <h3 class="points-users">Tus puntos: ${playerpo}</h3>
-        <h3 class="points-users">Puntos banquero: ${cpupo}</h3>
-      </div>
-      <button type="button" class="btn-reiniciar btn" id="jugarotravez">
-        Volver a jugar
-      </button>
-    </div>
-  </div>`;
-    modal.innerHTML = modaltemplate;
+    </div>`;
+      modal.innerHTML = modaltemplate;
+      document.getElementById("jugarotravez").addEventListener("click", () => {
+        this.reiniciar();
+        resetall();
+      });
+    }, 2600);
   }
 
   crearHtmlCartas(arrayCartas, id) {
@@ -77,19 +115,30 @@ class Procesos {
           <div class="number-top"><p>${data.valor}</p></div>
             <i class="fal fa-${data.tipo}"></i>
           <div class="number-bottom"><p>${data.valor}</p></div>
-        </div>`;
+        </div>
+        `;
         result += templatecardhumano;
         document.getElementById("player").innerHTML = result;
       });
     } else {
-      arrayCartas.forEach(() => {
+      arrayCartas.forEach((data) => {
         const templatecardcpu = `             
-        <div class="carta-mesa back-card"></div>`;
+        <div class="carta">
+          <div class="carta-mesa front-card-bank ${data.tipo}-card">
+            <div class="number-top"><p>${data.valor}</p></div>
+              <i class="fal fa-${data.tipo}"></i>
+          <div class="number-bottom"><p>${data.valor}</p></div>
+          </div>
+            <div class="carta-mesa back-card-bank"></div>
+        </div>`;
         result += templatecardcpu;
         document.getElementById("banquero").innerHTML = result;
       });
     }
   }
+
+  /**
+   *  */
 
   unjugadorquedado(name, id, puntos) {
     (this.name = name), (this.id = id), (this.points = puntos);
@@ -130,6 +179,11 @@ class Procesos {
   ocultarmodalvaloras() {
     const modal = document.getElementById("modalAS");
     modal.classList.add("hidden");
+  }
+
+  revelarTarjeta() {
+    const tarjetas = document.getElementById("banquero");
+    tarjetas.classList.add("flip-carta");
   }
 }
 let processclass = new Procesos();
@@ -229,6 +283,8 @@ class Cpu extends Jugador {
     this._masocartasjuego = [];
   }
 
+  volverajugar() {}
+
   bienvenida(player) {
     var masoDeCartas = this.armarMasoDeCartas();
     this.barajarMaso(masoDeCartas);
@@ -292,7 +348,7 @@ class Cpu extends Jugador {
     let seguir = "si";
     while (seguir === "si") {
       let puntos = this.puntos;
-      if (puntos > 26 && puntos < 31) {
+      if (puntos > 26 && puntos < 90) {
         processclass.todosquedados();
         seguir = "no";
       } else if (puntos < 31) {
@@ -306,7 +362,16 @@ class Cpu extends Jugador {
 
 let cpu = new Cpu("James", "Banquero", 0);
 let player = new Humano("houdini", "player", "", 0);
+//btn
 cpu.bienvenida(player);
+//fin btn
+
+const resetall = () => {
+  cpu = new Cpu("James", "Banquero", 0);
+  player = new Humano("houdini", "player", "", 0);
+  processclass.reiniciar();
+  cpu.bienvenida(player);
+};
 
 document.getElementById("tomar").addEventListener("click", () => {
   player.pedircarta(cpu.sigueJugando("si"));
